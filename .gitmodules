@@ -1,0 +1,3 @@
+[submodule "hostdir/binpkgs"]
+	path = hostdir/binpkgs
+	url = https://github.com/simple-sketch/void-binpkgs.git
