@@ -1,0 +1,28 @@
+# Template file for 'voxtype'
+pkgname=voxtype
+version=1.1.1
+revision=1
+build_style=cargo
+make_build_args="--bin voxtype"
+make_check_args="--bin voxtype"
+make_install_args="--path . --bin voxtype"
+hostmakedepends="pkg-config cmake clang libclang"
+makedepends="alsa-lib-devel sqlite-devel"
+depends="wtype wl-clipboard alsa-pipewire"
+short_desc="Local push-to-talk voice dictation for Wayland"
+maintainer="Orphaned <orphan@voidlinux.org>"
+license="MIT"
+homepage="https://voxtype.io"
+distfiles="https://github.com/peteonrails/voxtype/archive/refs/tags/v${version}.tar.gz"
+checksum=dbde68a335ae190aec4f077e1b653f5fef3ff9dc7cddbfce1befae090eea33c9
+
+post_patch() {
+	# The optional OpenVINO backend is disabled; its Git override fetches
+	# multi-GB submodules even for the default CPU-only Whisper build.
+	vsed -i '/^\[patch.crates-io\]/,$d' Cargo.toml
+	cargo update --workspace
+}
+
+post_install() {
+	vlicense LICENSE
+}
